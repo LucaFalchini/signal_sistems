@@ -66,23 +66,47 @@ def time_domain_plot(data, fs, graph_name=" "):
     plt.show()
     return()
 
-files = []
+files_list = []
 wav_list = []
-def select_files(b, files=files):    
+def select_files(files):
+    '''
+    Carga archivos de audio en formato '.wav', '.wma', '.mp3'
+    y los almacena en una lista de tuplas (Numpy array, frecuencia de muestreo).
+    
+    Parametros
+    ----------
+    
+    fs: Frecuencia de muestreo
+
+    graph_name: str, nombre del gráfico
+        
+    return: Gráfico del dominio temporal de la señal
+
+    Ejemplo
+    -------
+    import numpy as np
+    from matplotlib import pyplot as plt
+    import soundfile as sf
+    
+    file = 'ruidoRosa.wav'
+    time_domain_plot(file)
+
+    '''    
     clear_output()
-    files.clear() 
+    files_list.clear() 
     wav_list.clear() 
     root = Tk()
     root.withdraw() # Hide the main window.
     root.call('wm', 'attributes', '.', '-topmost', True) # Raise the root to the top of all windows.
-    files.append(filedialog.askopenfilenames(filetypes = [('Wav', '.wav'),('Mp3', '.mp3'),('Wma', '.wma')])) # List of selected files will be set button's file attribute.
-    print(files) # Print the list of files selected.
+    files_list.append(filedialog.askopenfilenames(filetypes = [('Wav', '.wav'),('Mp3', '.mp3'),('Wma', '.wma')])) # List of selected files will be set button's file attribute.
+    print(files_list) # Print the list of files selected.
      
-    for i in range(len(files[0])):  # Bucle para almacenar los datos de los archivos en una lista.
-        wav = read_wav(files[0][i])
+    for i in range(len(files_list[0])):  # Bucle para almacenar los datos de los archivos en una lista.
+        wav = read_wav(files_list[0][i])
         wav_list.append(wav)
 
 if __name__ == '__main__':
     time_domain_plot()
     read_wav()
+    select_files()
     
