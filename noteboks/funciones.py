@@ -105,8 +105,18 @@ def select_files(files):
         wav = read_wav(files_list[0][i])
         wav_list.append(wav)
 
+def reproducir(filename):
+    'Función para reproducir audio'
+
+    # Extract data and sampling rate from file
+    data, fs = sf.read(filename, dtype='float32')  
+    sd.play(data, fs)
+    status = sd.wait()  # Wait until file is done playing
+    return data
+
 if __name__ == '__main__':
     time_domain_plot()
     read_wav()
     select_files()
+    reproducir()
     
