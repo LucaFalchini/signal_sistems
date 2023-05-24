@@ -3,9 +3,9 @@ from matplotlib import pyplot as plt
 from scipy import signal
 import soundfile as sf
 import sounddevice as sd
-from ipywidgets import Button
-from tkinter import Tk, filedialog
+from tkinter import *
 from IPython.display import clear_output, display
+from tkinter import filedialog
 
 def read_wav(file):
     """
@@ -15,7 +15,7 @@ def read_wav(file):
     ----------
     file: Archivo ".wav"
         
-    return: Numpy array
+    return: (Numpy array, frecuencia de muestreo) 
 
     Ejemplo
     -------
@@ -66,45 +66,6 @@ def time_domain_plot(data, fs, graph_name=" "):
     plt.show()
     return()
 
-files_list = []
-wav_list = []
-def select_files(files):
-    '''
-    Carga archivos de audio en formato '.wav', '.wma', '.mp3'
-    y los almacena en una lista de tuplas (Numpy array, frecuencia de muestreo).
-    
-    Parametros
-    ----------
-    
-    fs: Frecuencia de muestreo
-
-    graph_name: str, nombre del gráfico
-        
-    return: Gráfico del dominio temporal de la señal
-
-    Ejemplo
-    -------
-    import numpy as np
-    from matplotlib import pyplot as plt
-    import soundfile as sf
-    
-    file = 'ruidoRosa.wav'
-    time_domain_plot(file)
-
-    '''    
-    clear_output()
-    files_list.clear() 
-    wav_list.clear() 
-    root = Tk()
-    root.withdraw() # Hide the main window.
-    root.call('wm', 'attributes', '.', '-topmost', True) # Raise the root to the top of all windows.
-    files_list.append(filedialog.askopenfilenames(filetypes = [('Wav', '.wav'),('Mp3', '.mp3'),('Wma', '.wma')])) # List of selected files will be set button's file attribute.
-    print(files_list) # Print the list of files selected.
-     
-    for i in range(len(files_list[0])):  # Bucle para almacenar los datos de los archivos en una lista.
-        wav = read_wav(files_list[0][i])
-        wav_list.append(wav)
-
 def reproducir(filename):
     'Función para reproducir audio'
 
@@ -115,8 +76,30 @@ def reproducir(filename):
     return data
 
 if __name__ == '__main__':
-    time_domain_plot()
-    read_wav()
-    select_files()
-    reproducir()
+    file = 'signal-systems/trabajo_practico/noteboks/ruidoRosa.wav'
+    data, fs = read_wav(file)
+    def graph_1():
+        time_domain_plot(data, fs, graph_name="Ruido Rosa")
+    def play():
+        reproducir(file)
+
+    window = Tk()
+    button = Button(window, 
+                    text="Plot", 
+                    command=graph_1, 
+                    font=("Arial", 16),
+                    fg="blue")
+    button2 = Button(window, 
+                    text="Play", 
+                    command=play, 
+                    font=("Arial", 16),
+                    fg="blue")
+
+    button.pack()
+    button2.pack()
+    window.mainloop()
+    
+
+    
+    
     
