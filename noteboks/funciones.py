@@ -75,8 +75,33 @@ def reproducir(filename):
     status = sd.wait()  # Wait until file is done playing
     return data
 
+def esc_log(data_impulse, a = 20):
+    """
+    Convierte un array a escala logarítmica.
+    
+    Parametros
+    ----------
+    data_impulse: Numpy array
+
+    a: int, factor de multiplicación del logaritmo. Por defecto es 20.
+      
+    return: Numpy array a escala logarítmica
+
+    Ejemplo
+    -------
+    import numpy as np
+    import soundfile as sf
+    
+    data_impulse, fs = sf.read("impulso_aula2.wav")    #Llamo a la funcion con la señal "impulso.wav"
+    B = esc_log(data_impulse)   
+
+    """
+    A = data_impulse/(np.max(np.abs(data_impulse)))
+    Norm_log = a * np.log10(A)
+    return Norm_log
+
 if __name__ == '__main__':
-    file = 'signal-systems/trabajo_practico/noteboks/ruidoRosa.wav'
+    file = 'ruidoRosa.wav'
     data, fs = read_wav(file)
     def graph_1():
         time_domain_plot(data, fs, graph_name="Ruido Rosa")
