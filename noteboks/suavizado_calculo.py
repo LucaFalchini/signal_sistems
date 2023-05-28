@@ -190,32 +190,32 @@ def parametros_acústicos(data, limit, w_size=1000, fs=44100):
     # Llamada a la función de regresión lineal
     x_values = np.linspace(min(X), max(X), fs)
     m, b = regresion_lineal(X, y)
-    print("T: ", -m/60)
-    list_param.append(-m/60)
+    #print("T: ", -m/60)
+    #list_param.append(-m/60)
 
     # EDT
     x_values_edt = np.linspace(min(X), max(X), fs)
     m_EDT, b_EDT = regresion_lineal(X_EDT, y_EDT)
-    print("EDT: ", -m_EDT/60)
-    list_param.append(-m_EDT/60)
+    print("EDT: ", -60/m_EDT)
+    list_param.append(-60/m_EDT)
     
     # T10
     x_values_T10 = np.linspace(min(X), max(X), fs)
     m_T10, b_T10 = regresion_lineal(X_T10, y_T10)
     print("T10", -m_T10/60)
-    list_param.append(-m_T10/60)
+    list_param.append(-60/m_T10)
 
     # T20
     x_values_T20 = np.linspace(min(X), max(X), fs)
     m_T20, b_T20 = regresion_lineal(X_T20, y_T20)
-    print("T20", -m_T20/60)
-    list_param.append(-m_T20/60)
+    print("T20", -60/m_T20)
+    list_param.append(-60/m_T20)
 
     # T30
     x_values_T30 = np.linspace(min(X), max(X), fs)
     m_T30, b_T30 = regresion_lineal(X_T30, y_T30)
-    print("T30", -m_T30/60)
-    list_param.append(-m_T30/60)
+    print("T30", -60/m_T30)
+    list_param.append(-60/m_T30)
 
     #------------------------------------------
     # Generar valores para la línea de regresión
@@ -248,8 +248,8 @@ def parametros_acústicos(data, limit, w_size=1000, fs=44100):
     ax.set_ylabel("Amplitud en dB")
     ax.set_ylim(-100, 1)
     ax.legend()
-    print(list_param)
     plt.show()
+    print(list_param)
     return list_param
 
 if __name__ == "__main__":

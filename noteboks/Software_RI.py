@@ -31,6 +31,9 @@ if __name__ == "__main__":
         list_param.append(param_i)
     print(list_param)
 
-    df = pd.DataFrame(list_param)
+    columns = list_param[::2]
+    list_param_df = list_param[1::2]
+
+    df = pd.DataFrame(list_param_df, index =['EDT', 'T10', 'T20', 'T30'], columns =columns)
     df.to_csv('resultados.csv')
     print(df)
