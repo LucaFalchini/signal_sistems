@@ -26,7 +26,7 @@ def read_wav(file):
     read_wav(file)
 
     """
-    data, fs = sf.read(file, dtype='float32')
+    data, fs = sf.read(file)
     return(data, fs)
 
 def time_domain_plot(data, fs, graph_name=" "):
@@ -56,7 +56,7 @@ def time_domain_plot(data, fs, graph_name=" "):
     
     rate = len(data)       
     time = np.linspace(0, rate/fs, num=rate)  # Objeto Numpy para la duración en el eje x
-    
+        
     # Grafico
     plt.figure(figsize=(15, 5))
     plt.plot(time, data, linewidth=0.5)
@@ -100,11 +100,38 @@ def esc_log(data_impulse, a = 20):
     Norm_log = a * np.log10(A)
     return Norm_log
 
+def analisis_frecuencias(audio, fs):
+    '''
+    Calcular la transformada de Fourier de la señal de audio y graficarla.
+
+    '''        
+    audio = audio / np.max(np.abs(audio))  # Normalizar los valores de la señal
+    fft_data = np.fft.fft(audio)
+
+    # Calcular los valores de frecuencia correspondientes
+    fft_freq = np.fft.fftfreq(len(audio), 1.0 / fs)
+
+    # Tomar solo la mitad de los datos (la otra mitad es simétrica)
+    fft_data = esc_log(np.abs(fft_data[:len(audio)//2]))
+    fft_freq = fft_freq[:len(audio)//2]
+
+    # Graficar el análisis de frecuencia
+    plt.semilogx(fft_freq, fft_data)
+    plt.xlabel('Frecuencia (Hz)')
+    plt.ylabel('Amplitud (dB)')
+    plt.title('Análisis de frecuencia de audio')
+    plt.grid(True)
+    custom_xticks = [31.5, 63, 125, 250, 1000, 4000, 16000]
+    plt.xticks(custom_xticks, custom_xticks)
+    plt.fill_between(fft_freq, fft_data, np.min(fft_data))
+    plt.show()
+    return(fft_data)
+
 if __name__ == '__main__':
-    file = 'ruidoRosa.wav'
+    file = 'signal-systems/trabajo_practico/noteboks/TP/Mediciones/Respuestas al impulso/IR2/Mono.wav'
     data, fs = read_wav(file)
     def graph_1():
-        time_domain_plot(data, fs, graph_name="Ruido Rosa")
+        time_domain_plot(data, fs, graph_name="impulso")
     def play():
         reproducir(file)
 
