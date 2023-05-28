@@ -17,23 +17,28 @@ if __name__ == "__main__":
     data, fs = f.read_wav(file)
     f.time_domain_plot(data, fs)
     
-    frec = pf.filtro_IEC(file)
-
-    nominal_frec = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
-    list_param = []
     
+    frec = pf.filtro_IEC(file)  # lista con las frecuencias filtradas por banda de octava     
+    nominal_frec = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+    
+    ## Genero un gráfico para determinar el corte de la integral de Schroeder
+    log_signal = f.esc_log(data)
+    f.time_domain_plot(log_signal, fs)
+    limit=int(input("ingrese el tiempo limite en segundos de la integración de Schroeder: "))
+
+    list_param = [] # Lista que almacena los parámetros acústicos por banda de octava
     for i in range(len(nominal_frec)):
-        log_signal = f.esc_log(frec[i][1])
-        f.time_domain_plot(log_signal, fs)
-        limit=int(input("ingrese el tiempo limite en segundos de la integración de Schroeder: "))
+        log_signal_i = f.esc_log(frec[i][1])
         param_i = sc.parametros_acústicos(frec[i][1], limit)
         list_param.append(nominal_frec[i])
         list_param.append(param_i)
     print(list_param)
 
-    columns = list_param[::2]
+    index = list_param[::2]
     list_param_df = list_param[1::2]
 
-    df = pd.DataFrame(list_param_df, index =['EDT', 'T10', 'T20', 'T30'], columns =columns)
+    
+    df = pd.DataFrame(list_param_df, index = index, columns =["EDT", "T10", "T20", "T30"])
+    df = df.transpose()
     df.to_csv('resultados.csv')
     print(df)

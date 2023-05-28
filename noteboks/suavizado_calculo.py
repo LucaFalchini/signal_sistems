@@ -260,3 +260,4 @@ if __name__ == "__main__":
     limit=int(input("ingrese el tiempo limite en segundos de la integración de Schroeder: "))
     parametros_acústicos(signal, limit)
     
+    
